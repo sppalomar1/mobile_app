@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../../supabaseClient';
 
 interface MenuItem {
   id: string;

@@ -5,17 +5,17 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 export default function LoginAs() {
   return (
     <View style={styles.container}>
-      <Image source={require("../assets/images/logo.jpg")} style={styles.logo} />
+      <Image source={require("../assets/images/logo.png")} style={styles.logo} />
 
       <Text style={styles.title}>Log In As</Text>
 
       <View style={styles.row}>
         <View style={styles.iconBox}>
-          <Image source={require("../assets/images/customer.jpg")} style={styles.icon} />
+          <Image source={require("../assets/images/customer.png")} style={styles.icon} />
         </View>
 
         <View style={styles.iconBox}>
-          <Image source={require("../assets/images/admin.jpg")} style={styles.icon} />
+          <Image source={require("../assets/images/admin.png")} style={styles.icon} />
         </View>
       </View>
 

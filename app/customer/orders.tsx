@@ -1,9 +1,15 @@
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { supabase } from '../supabaseClient';
+import {
+  Alert,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { supabase } from '../../supabaseClient';
 
-// --- Type definitions ---
 interface MenuItem {
   id: string;
   name: string;
@@ -16,7 +22,7 @@ interface Order {
   total: number;
   status: string;
   created_at: string;
-  menu_items: MenuItem | null; // Could be null if relation is empty
+  menu_items: MenuItem | null;
 }
 
 export default function Orders() {
@@ -28,10 +34,8 @@ export default function Orders() {
       const { data } = await supabase.auth.getUser();
       const id = data?.user?.id ?? null;
       setUserId(id);
-
       if (id) fetchOrders(id);
     };
-
     initialize();
   }, []);
 
@@ -44,7 +48,6 @@ export default function Orders() {
 
     if (error) console.log('Fetch orders error:', error);
     else {
-      // Supabase returns `menu_items` as array if it's a relationship, pick first item
       const formatted = (data || []).map((o: any): Order => ({
         id: o.id,
         quantity: o.quantity,
@@ -58,12 +61,11 @@ export default function Orders() {
   };
 
   const editOrder = (order: Order) => {
-    const currentQty = order.quantity.toString();
     const menuItem = order.menu_items;
     if (!menuItem) return;
 
     Alert.prompt(
-      'Edit Order',
+      'Edit Quantity',
       `Change quantity for ${menuItem.name}`,
       [
         { text: 'Cancel', style: 'cancel' },
@@ -72,129 +74,185 @@ export default function Orders() {
           onPress: (qtyStr: string | undefined) => {
             if (!qtyStr) return;
             const qty = Number(qtyStr);
-            if (isNaN(qty) || qty <= 0) return Alert.alert('Invalid quantity');
+            if (isNaN(qty) || qty <= 0) {
+              Alert.alert('Invalid quantity');
+              return;
+            }
 
             supabase
               .from('orders')
               .update({ quantity: qty, total: qty * menuItem.price })
               .eq('id', order.id)
               .then(({ error }) => {
-                if (error) Alert.alert('Error', 'Failed to update order: ' + error.message);
+                if (error) Alert.alert('Error', error.message);
                 else fetchOrders(userId!);
               });
           },
         },
       ],
       'plain-text',
-      currentQty
+      order.quantity.toString()
     );
   };
 
   const deleteOrder = (orderId: string) => {
-    Alert.alert(
-      'Confirm Delete',
-      'Are you sure you want to delete this order?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: () => {
-            supabase
-              .from('orders')
-              .delete()
-              .eq('id', orderId)
-              .then(({ error }) => {
-                if (error) Alert.alert('Error', 'Failed to delete order: ' + error.message);
-                else fetchOrders(userId!);
-              });
-          },
+    Alert.alert('Confirm Delete', 'Delete this order?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: () => {
+          supabase
+            .from('orders')
+            .delete()
+            .eq('id', orderId)
+            .then(({ error }) => {
+              if (error) Alert.alert('Error', error.message);
+              else fetchOrders(userId!);
+            });
         },
-      ]
-    );
+      },
+    ]);
   };
 
   const goToCheckout = () => {
-    router.push('/checkout');
+    router.push('/customer/checkout');
   };
 
   return (
-    <View style={{ flex: 1, padding: 16 }}>
+    <View style={styles.container}>
+      <Text style={styles.header}>My Orders</Text>
+
       <FlatList
         data={orders}
         keyExtractor={(o) => o.id}
+        contentContainerStyle={{ paddingBottom: 120 }}
         renderItem={({ item }) => (
           <View style={styles.card}>
-            <Text style={{ fontWeight: '700' }}>{item.menu_items?.name}</Text>
-            <Text>Qty: {item.quantity}</Text>
-            <Text>₱{Number(item.total).toFixed(2)}</Text>
-            <Text>Status: {item.status}</Text>
-            <Text>{new Date(item.created_at).toLocaleString()}</Text>
+            <Text style={styles.name}>{item.menu_items?.name}</Text>
+            <Text style={styles.info}>Qty: {item.quantity}</Text>
+            <Text style={styles.info}>Total: ₱{item.total.toFixed(2)}</Text>
+            <Text style={styles.info}>Status: {item.status}</Text>
+            <Text style={styles.date}>
+              {new Date(item.created_at).toLocaleString()}
+            </Text>
 
             <View style={styles.actionRow}>
               <TouchableOpacity style={styles.editBtn} onPress={() => editOrder(item)}>
-                <Text style={styles.actionText}>Edit</Text>
+                <Text style={styles.btnText}>Edit</Text>
               </TouchableOpacity>
+
               <TouchableOpacity style={styles.deleteBtn} onPress={() => deleteOrder(item.id)}>
-                <Text style={styles.actionText}>Delete</Text>
+                <Text style={styles.btnText}>Delete</Text>
               </TouchableOpacity>
             </View>
           </View>
         )}
       />
 
+      {/* CHECKOUT BUTTON (Only if orders exist) */}
       {orders.length > 0 && (
         <TouchableOpacity style={styles.checkoutBtn} onPress={goToCheckout}>
           <Text style={styles.checkoutText}>PROCEED TO CHECKOUT</Text>
         </TouchableOpacity>
       )}
 
-      {orders.length === 0 && <Text>No orders yet.</Text>}
+      {orders.length === 0 && (
+        <Text style={styles.empty}>No orders yet.</Text>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#B37044",
+    padding: 16,
+  },
+
+  header: {
+    color: "white",
+    fontSize: 28,
+    fontWeight: "700",
+    textAlign: "center",
+    marginBottom: 20,
+  },
+
   card: {
-    padding: 12,
-    borderBottomWidth: 1,
-    borderColor: '#eee',
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    marginBottom: 10,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 16,
+    marginBottom: 15,
+    elevation: 4,
   },
+
+  name: {
+    fontSize: 20,
+    fontWeight: "700",
+    marginBottom: 5,
+  },
+
+  info: {
+    fontSize: 16,
+    color: "#555",
+  },
+
+  date: {
+    fontSize: 12,
+    color: "#888",
+    marginTop: 5,
+  },
+
   actionRow: {
-    flexDirection: 'row',
-    marginTop: 10,
-    justifyContent: 'flex-end',
+    flexDirection: "row",
+    marginTop: 15,
+    justifyContent: "flex-end",
+    gap: 10,
   },
+
   editBtn: {
-    backgroundColor: '#007bff',
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 6,
-    marginRight: 8,
+    backgroundColor: "#B37044",
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 12,
   },
+
   deleteBtn: {
-    backgroundColor: '#dc3545',
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 6,
+    backgroundColor: "#6D4B2F",
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 12,
   },
-  actionText: {
-    color: '#fff',
-    fontWeight: '700',
+
+  btnText: {
+    color: "white",
+    fontWeight: "700",
   },
-  checkoutBtn: {
-    backgroundColor: '#28a745',
-    padding: 15,
-    borderRadius: 10,
+
+  empty: {
+    color: "white",
+    textAlign: "center",
     marginTop: 20,
+    fontSize: 16,
   },
+
+  /* NEW CHECKOUT BUTTON */
+  checkoutBtn: {
+    position: "absolute",
+    bottom: 20,
+    left: 20,
+    right: 20,
+    backgroundColor: "#6D4B2F",
+    paddingVertical: 16,
+    borderRadius: 20,
+    elevation: 5,
+  },
+
   checkoutText: {
-    textAlign: 'center',
-    color: 'white',
+    textAlign: "center",
+    color: "white",
+    fontWeight: "700",
     fontSize: 18,
-    fontWeight: '700',
   },
 });

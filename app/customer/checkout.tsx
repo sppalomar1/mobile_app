@@ -1,7 +1,14 @@
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { supabase } from '../supabaseClient';
+import {
+  Image,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native';
+import { supabase } from '../../supabaseClient';
 
 export default function Checkout() {
   const [userId, setUserId] = useState<string>('');
@@ -36,7 +43,6 @@ export default function Checkout() {
   };
 
   const confirmPayment = async () => {
-    // Update status to "paid"
     await supabase
       .from('orders')
       .update({ status: 'paid' })
@@ -44,20 +50,20 @@ export default function Checkout() {
       .eq('status', 'pending');
 
     setShowQR(false);
-    router.replace('/receipt');
+    router.replace('/customer/receipt');
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Checkout</Text>
 
-      <View style={styles.section}>
+      <View style={styles.card}>
         <Text style={styles.sectionTitle}>Order Summary</Text>
 
         {orders.map((o) => (
           <View key={o.id} style={styles.row}>
-            <Text>{o.menu_items.name}</Text>
-            <Text>₱{Number(o.total).toFixed(2)}</Text>
+            <Text style={styles.itemName}>{o.menu_items.name}</Text>
+            <Text style={styles.itemPrice}>₱{Number(o.total).toFixed(2)}</Text>
           </View>
         ))}
 
@@ -71,8 +77,8 @@ export default function Checkout() {
         <Text style={styles.payText}>PAY WITH GCASH</Text>
       </TouchableOpacity>
 
-      {/* GCash Modal */}
-      <Modal visible={showQR} transparent animationType="slide">
+      {/* MODAL */}
+      <Modal transparent visible={showQR} animationType="fade">
         <View style={styles.modalBG}>
           <View style={styles.modalCard}>
             <Text style={styles.modalTitle}>Scan to Pay</Text>
@@ -97,61 +103,127 @@ export default function Checkout() {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 20, flex: 1 },
-  header: { fontSize: 28, fontWeight: '700', marginBottom: 20 },
-  section: {
-    backgroundColor: '#fff',
-    padding: 15,
-    borderRadius: 12,
-    marginBottom: 20,
-    elevation: 3,
+  container: {
+    flex: 1,
+    backgroundColor: "#B37044",
+    padding: 20,
   },
-  sectionTitle: { fontSize: 18, fontWeight: '700', marginBottom: 10 },
+
+  header: {
+    fontSize: 28,
+    fontWeight: "700",
+    color: "white",
+    marginBottom: 20,
+    textAlign: "center",
+  },
+
+  card: {
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 18,
+    elevation: 4,
+    marginBottom: 25,
+  },
+
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    marginBottom: 10,
+    color: "#6D4B2F",
+  },
+
   row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingVertical: 6,
   },
-  totalRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 12,
-    marginTop: 10,
-    borderTopWidth: 1,
-    borderColor: '#ddd',
-  },
-  totalText: { fontSize: 20, fontWeight: '700' },
-  payBtn: {
-    backgroundColor: '#0066ff',
-    padding: 15,
-    borderRadius: 12,
-  },
-  payText: { color: '#fff', fontSize: 18, textAlign: 'center', fontWeight: '700' },
 
-  // Modal
+  itemName: {
+    fontSize: 16,
+    color: "#444",
+  },
+
+  itemPrice: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#6D4B2F",
+  },
+
+  totalRow: {
+    borderTopWidth: 1,
+    borderColor: "#ddd",
+    marginTop: 10,
+    paddingTop: 12,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+
+  totalText: {
+    fontSize: 22,
+    fontWeight: "700",
+    color: "#6D4B2F",
+  },
+
+  payBtn: {
+    backgroundColor: "#6D4B2F",
+    padding: 15,
+    borderRadius: 14,
+  },
+
+  payText: {
+    textAlign: "center",
+    color: "white",
+    fontSize: 18,
+    fontWeight: "700",
+  },
+
+  // MODAL
   modalBG: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.6)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(0,0,0,0.6)",
+    justifyContent: "center",
+    alignItems: "center",
   },
+
   modalCard: {
-    width: '85%',
-    backgroundColor: 'white',
-    padding: 20,
-    borderRadius: 12,
-    alignItems: 'center',
+    backgroundColor: "white",
+    width: "85%",
+    padding: 25,
+    borderRadius: 20,
+    alignItems: "center",
   },
-  modalTitle: { fontSize: 22, fontWeight: '700', marginBottom: 15 },
-  qr: { width: 200, height: 200, marginBottom: 20 },
+
+  modalTitle: {
+    fontSize: 22,
+    fontWeight: "700",
+    marginBottom: 20,
+    color: "#6D4B2F",
+  },
+
+  qr: {
+    width: 220,
+    height: 220,
+    marginBottom: 25,
+  },
 
   confirmBtn: {
-    backgroundColor: '#28a745',
+    backgroundColor: "#B37044",
     padding: 12,
-    borderRadius: 8,
-    width: '100%',
-    marginBottom: 10,
+    borderRadius: 12,
+    width: "100%",
   },
-  confirmText: { color: 'white', textAlign: 'center', fontSize: 18, fontWeight: '700' },
-  cancelText: { marginTop: 10, color: 'red', fontSize: 16 },
+
+  confirmText: {
+    color: "white",
+    textAlign: "center",
+    fontSize: 18,
+    fontWeight: "700",
+  },
+
+  cancelText: {
+    marginTop: 15,
+    fontSize: 16,
+    color: "#6D4B2F",
+    fontWeight: "700",
+  },
 });
