@@ -1,50 +1,81 @@
-# Welcome to your Expo app 👋
+Online Canteen Ordering App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A mobile application built using React Native (Expo) and Supabase that allows students and canteen administrators to efficiently manage canteen orders.
+The system provides separate features for Admin and Customer with full CRUD operations, authentication, and media upload.
 
-## Get started
+⭐ Group Members:
+| Role       | Name                        |
+| ---------- | --------------------------- |
+| **Leader** | **Shiela Marie B. Palomar** |
+| **Member** | **Novem Kilakiga**          |
 
-1. Install dependencies
+📱 Project Overview
 
-   ```bash
-   npm install
-   ```
+The Online Canteen Ordering App automates canteen reservation and ordering.
+It includes two user roles:
+👨‍🍳 Admin Features
 
-2. Start the app
+Admins can:
 
-   ```bash
-   npx expo start
-   ```
+➕ Add new menu items
 
-In the output, you'll find options to open the app in a
+📝 Edit existing menu items
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+❌ Delete menu items
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+📸 Upload menu item images via Supabase Storage
 
-## Get a fresh project
+🧑‍💼 Customer Features
 
-When you're ready, run:
+Customers can:
 
-```bash
-npm run reset-project
-```
+🍽️ View available menu items
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+🛒 Order items
 
-## Learn more
+📋 View their order history
 
-To learn more about developing your project with Expo, look at the following resources:
+💳 Checkout
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+🧾 View receipt after successful order
 
-## Join the community
+🧩 General App Features
 
-Join our community of developers creating universal apps.
+🔐 User Authentication (Sign Up / Login using Supabase Auth)
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+📘 CRUD Operations (Menu items, orders, and notes)
+
+🖼️ Media Upload (Images & videos for menu items)
+
+⚡ Real-time database operations via Supabase
+
+📂 Project Structure:
+app/
+ ├── admin/
+ │   ├── _layout.tsx
+ │   ├── addMenuItem.tsx
+ │   ├── editMenuItem.tsx
+ │   ├── adminOrders.tsx
+ │   └── menu.tsx
+ ├── customer/
+ │   ├── menu.tsx
+ │   ├── order.tsx
+ │   ├── checkout.tsx
+ │   ├── receipt.tsx
+ │   └── orders.tsx
+ ├── notes.tsx
+ ├── login.tsx
+ ├── signup.tsx
+ ├── index.tsx
+ └── _layout.tsx
+
+🛠️ Tech Stack:
+| Technology              | Purpose                     |
+| ----------------------- | --------------------------- |
+| **React Native (Expo)** | Mobile UI development       |
+| **Expo Router**         | Navigation / screen routing |
+| **Supabase Auth**       | User login & signup         |
+| **Supabase Database**   | Storing users, menu, orders |
+| **Supabase Storage**    | Storing menu images / media |
+| **EAS Build**           | APK generation              |
+
