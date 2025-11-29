@@ -96,20 +96,20 @@ Supabase public anon keys are safe to use in client-side apps.
 
 ▶️ How to Run the App
 1️⃣ Install Dependencies
-npm install
+    npm install
 
 2️⃣ Start the App
-npx expo start
+    npx expo start
 
 Open the app in:
-Expo Go
+    Expo Go
 
 Android Emulator
-iOS Simulator
+    iOS Simulator
 
 Development Build
 📦 APK Build Instructions
 
 To generate your APK:
-eas build -p android --profile preview
+    eas build -p android --profile preview
 
