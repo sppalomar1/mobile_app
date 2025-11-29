@@ -1,55 +1,62 @@
-Online Canteen Ordering App
+📱 Online Canteen Ordering App
+A mobile application built using React Native (Expo) and Supabase that allows students and canteen administrators to manage menu items, process orders, and streamline canteen operations.
+The app supports two user roles: Admin and Customer, each with its own features and screens.
 
-A mobile application built using React Native (Expo) and Supabase that allows students and canteen administrators to efficiently manage canteen orders.
-The system provides separate features for Admin and Customer with full CRUD operations, authentication, and media upload.
+👥 Group Members
+Role	Name
+Leader	Shiela Marie B. Palomar
+Member	Novem Kilakiga
+Member	JV Tyrone J. Medellada
+Member	Khyte Louie Mortel
+Member	John Benidict Oro
+Member	Megue Alarcio
 
-⭐ Group Members:
-| Role       | Name                        |
-| ---------- | --------------------------- |
-| **Leader** | **Shiela Marie B. Palomar** |
-| **Member** | **Novem Kilakiga**          |
+📌 Project Overview
+The Online Canteen Ordering App automates canteen ordering.
+Admins can manage menu items and view orders, while customers can browse items and place orders easily.
 
-📱 Project Overview
-
-The Online Canteen Ordering App automates canteen reservation and ordering.
-It includes two user roles:
 👨‍🍳 Admin Features
-
 Admins can:
 
-➕ Add new menu items
+➕ Add menu items
 
-📝 Edit existing menu items
+📝 Edit menu items
 
 ❌ Delete menu items
 
-📸 Upload menu item images via Supabase Storage
+📸 Upload menu images (Supabase Storage)
+
+📦 View customer orders
+
+✔️ Update order status
 
 🧑‍💼 Customer Features
 
 Customers can:
 
-🍽️ View available menu items
+🍽️ View menu items
 
-🛒 Order items
+🛒 Place orders
 
-📋 View their order history
+📋 View order history
+
+🧾 View receipt
 
 💳 Checkout
 
-🧾 View receipt after successful order
-
 🧩 General App Features
 
-🔐 User Authentication (Sign Up / Login using Supabase Auth)
+🔐 User Authentication (Supabase Auth)
 
-📘 CRUD Operations (Menu items, orders, and notes)
+📘 Full CRUD Operations
 
-🖼️ Media Upload (Images & videos for menu items)
+🖼️ Media Upload (Images for menu items)
 
-⚡ Real-time database operations via Supabase
+⚡ Supabase backend for database & storage
 
-📂 Project Structure:
+🗂️ File-based routing using Expo Router
+
+📂 Project Structure
 app/
  ├── admin/
  │   ├── _layout.tsx
@@ -69,13 +76,39 @@ app/
  ├── index.tsx
  └── _layout.tsx
 
-🛠️ Tech Stack:
-| Technology              | Purpose                     |
-| ----------------------- | --------------------------- |
-| **React Native (Expo)** | Mobile UI development       |
-| **Expo Router**         | Navigation / screen routing |
-| **Supabase Auth**       | User login & signup         |
-| **Supabase Database**   | Storing users, menu, orders |
-| **Supabase Storage**    | Storing menu images / media |
-| **EAS Build**           | APK generation              |
+🛠️ Tech Stack
+| Technology          | Purpose                |
+| ------------------- | ---------------------- |
+| React Native (Expo) | Mobile UI development  |
+| Expo Router         | Navigation and routing |
+| Supabase Auth       | User authentication    |
+| Supabase Database   | Menu & order storage   |
+| Supabase Storage    | Image upload           |
+| EAS Build           | APK generation         |
+
+🔧 Supabase Configuration
+
+The Supabase URL and Anon Key are stored in:
+supabaseClient.ts
+
+Supabase public anon keys are safe to use in client-side apps.
+
+▶️ How to Run the App
+1️⃣ Install Dependencies
+npm install
+
+2️⃣ Start the App
+npx expo start
+
+Open the app in:
+Expo Go
+
+Android Emulator
+iOS Simulator
+
+Development Build
+📦 APK Build Instructions
+
+To generate your APK:
+eas build -p android --profile preview
 
