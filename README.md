@@ -1,4 +1,5 @@
 📱 Online Canteen Ordering App
+
 A mobile application built using React Native (Expo) and Supabase that allows students and canteen administrators to manage menu items, process orders, and streamline canteen operations.
 The app supports two user roles: Admin and Customer, each with its own features and screens.
 
@@ -10,12 +11,13 @@ Member	JV Tyrone J. Medellada
 Member	Khyte Louie Mortel
 Member	John Benidict Oro
 Member	Megue Alarcio
-
 📌 Project Overview
+
 The Online Canteen Ordering App automates canteen ordering.
 Admins can manage menu items and view orders, while customers can browse items and place orders easily.
 
 👨‍🍳 Admin Features
+
 Admins can:
 
 ➕ Add menu items
@@ -77,19 +79,19 @@ app/
  └── _layout.tsx
 
 🛠️ Tech Stack
-| Technology          | Purpose                |
-| ------------------- | ---------------------- |
-| React Native (Expo) | Mobile UI development  |
-| Expo Router         | Navigation and routing |
-| Supabase Auth       | User authentication    |
-| Supabase Database   | Menu & order storage   |
-| Supabase Storage    | Image upload           |
-| EAS Build           | APK generation         |
-
+Technology	Purpose
+React Native (Expo)	Mobile UI development
+Expo Router	Navigation and routing
+Supabase Auth	User authentication
+Supabase Database	Menu & order storage
+Supabase Storage	Image upload
+EAS Build	APK generation
 🔧 Supabase Configuration
 
 The Supabase URL and Anon Key are stored in:
+
 supabaseClient.ts
+
 
 Supabase public anon keys are safe to use in client-side apps.
 
@@ -100,15 +102,19 @@ npm install
 2️⃣ Start the App
 npx expo start
 
+
 Open the app in:
+
 Expo Go
 
 Android Emulator
+
 iOS Simulator
 
 Development Build
+
 📦 APK Build Instructions
 
 To generate your APK:
-eas build -p android --profile preview
 
+eas build -p android --profile preview
